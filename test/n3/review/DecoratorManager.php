@@ -11,7 +11,9 @@ use src\Integration\DataProvider;
 //@todo consider replace Inheritance with Delegation
 class DecoratorManager extends DataProvider
 {
+    //@todo why public? consider make private
     public $cache;
+    //@todo why public? consider make private
     public $logger;
 
     /**
