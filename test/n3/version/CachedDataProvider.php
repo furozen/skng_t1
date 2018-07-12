@@ -1,14 +1,19 @@
 <?php
 
-namespace src\Decorator;
+namespace DataProvider;
 
 use DateTime;
 use Exception;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Log\LoggerInterface;
-use src\Integration\DataProvider;
 
-class CachedDataProvider{
+/**
+ * Caching provider's request and implementing IDataProvider
+ * Class CachedDataProvider
+ * @package DataProvider
+ */
+class CachedDataProvider implements IDataProvider
+{
     /**
      * @var CacheItemPoolInterface
      */
@@ -19,17 +24,17 @@ class CachedDataProvider{
     private $logger;
 
     /**
-     * @var DataProvider
+     * @var ICacheableDataProvider
      */
     private $provider;
 
     /**
-     * DecoratorManager constructor.
-     * @param DataProvider $provider
+     * CachedDataProvider constructor.
+     * @param ICacheableDataProvider $provider
      * @param CacheItemPoolInterface $cache
      * @param LoggerInterface $logger
      */
-    public function __construct(DataProvider $provider, CacheItemPoolInterface $cache, LoggerInterface $logger)
+    public function __construct(ICacheableDataProvider $provider, CacheItemPoolInterface $cache, LoggerInterface $logger)
     {
         $this->provider = $provider;
         $this->cache = $cache;
@@ -54,7 +59,7 @@ class CachedDataProvider{
             $this->logger->warning('Cache read error:'.$e->getMessage());
         };
 
-        $result = $this->provider->get($request);
+        $result = $this->provider->getResponse($request);
         try {
             $cacheItem
                 ->set($result)
@@ -68,7 +73,7 @@ class CachedDataProvider{
 
     }
 
-    public function getCacheKey(array $request):string
+    protected function getCacheKey(array $request):string
     {
         return $this->provider->getCacheKeyPrefix().hash('sha256',$request);
     }

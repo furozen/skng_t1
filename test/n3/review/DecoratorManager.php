@@ -1,6 +1,6 @@
 
 <?php
-
+//@todo consider same namespace
 namespace src\Decorator;
 
 use DateTime;
@@ -9,6 +9,7 @@ use Psr\Cache\CacheItemPoolInterface;
 use Psr\Log\LoggerInterface;
 use src\Integration\DataProvider;
 //@todo consider replace Inheritance with Delegation
+//@todo name of class is not good because pattern Decorator is not applied
 class DecoratorManager extends DataProvider
 {
     //@todo why public? consider make private

@@ -1,8 +1,12 @@
 <?php
 
-namespace src\Integration;
-
-abstract class DataProvider
+namespace DataProvider;
+/**
+ * Base class for web data provider
+ * Class AbstractWebDataProvider
+ * @package DataProvider
+ */
+abstract class AbstractWebDataProvider implements ICacheableDataProvider
 {
     protected $host;
     protected $user;
@@ -24,8 +28,11 @@ abstract class DataProvider
      * @param array $request
      * @return array
      */
-    abstract public function get(array $request):array;
+    abstract public function getResponse(array $request):array;
 
+    /**
+     * @inheritdoc
+     */
     abstract public function getCacheKeyPrefix():string;
 
 }
